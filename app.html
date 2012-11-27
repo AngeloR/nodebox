@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Box Trials</title>
+	</head>
+	<body>
+		<a href="#" class="capture" data-route="/auth/box" data-prevent="true">Box Login</a>
+		<div id="login-form">
+			<form action="/upload/box/" method="post" enctype="multipart/form-data">
+				<input type="file" name="file_upload">
+				<button type="submit">Upload to Box</button>
+			</form>
+		</div>
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script>
+		var token;	
+
+		if(window.location.href.split('/token/').length > 0) {
+			token = window.location.href.split('/token/')[1];
+			// load up the form
+			$('#login-form').show();
+		}
+		else {
+			$('#login-form').hide();
+		}
+
+		/** 
+		Easy route definer
+		**/
+		var Router = {
+			routes: {}
+			, add: function(route, cb) {
+				this.routes[route] = cb; 
+			}
+			, match: function(route) {
+				if(this.routes[route]) {
+					return this.routes[route];
+				}
+				else {
+					return function(){};
+				}
+			}
+		}
+
+		// add the controllers
+		Router.add('/auth/box', function($el){
+			$.ajax({
+				url: '/auth/box'
+				, success: function(url) {
+					window.location.href = url;
+				}
+			});
+		});
+
+		/**
+		Really cheapo router
+		**/
+		$('body').on('click', '.capture', function(e){
+			if($(this).attr('data-prevent')) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+
+
+			Router.match($(this).attr('data-route'))($(this));
+		});
+	</script>
+</html>
