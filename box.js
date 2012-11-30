@@ -4,7 +4,7 @@ var _ = require('underscore')
 	, xml2js = require('xml2js');
 
 var boxapi = {
-	apikey: undefined
+	apikey: creds.apikey
 
 	, routes: {
 		host: 'www.box.com'

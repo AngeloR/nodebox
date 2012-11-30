@@ -6,7 +6,7 @@
 	<body>
 		<a href="#" class="capture" data-route="/auth/box" data-prevent="true">Box Login</a>
 		<div id="login-form">
-			<form action="/upload/box/" method="post" enctype="multipart/form-data">
+			<form action="/upload/box/" id="upload-form" method="post" enctype="multipart/form-data">
 				<input type="file" name="file_upload">
 				<button type="submit">Upload to Box</button>
 			</form>
@@ -16,10 +16,11 @@
 	<script>
 		var token;	
 
-		if(window.location.href.split('/token/').length > 0) {
+		if(window.location.href.split('/token/').length > 1) {
 			token = window.location.href.split('/token/')[1];
 			// load up the form
 			$('#login-form').show();
+			$('#upload-form').attr('action', '/upload/box/' + token);
 		}
 		else {
 			$('#login-form').hide();
